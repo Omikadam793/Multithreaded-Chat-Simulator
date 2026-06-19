@@ -1,2 +1,3 @@
-echo "*.class" > .gitignore
-echo "logs/" >> .gitignore
+*.class
+logs/
+chat.log
