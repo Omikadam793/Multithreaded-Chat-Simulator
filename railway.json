@@ -1,0 +1,9 @@
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "javac src/Server.java src/ChatRoom.java src/ClientHandler.java src/Message.java"
+  },
+  "deploy": {
+    "startCommand": "java -cp src Server"
+  }
+}
