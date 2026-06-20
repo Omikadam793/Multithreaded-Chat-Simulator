@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -8,7 +9,7 @@ public class Server {
         int port = 8080;
         ExecutorService pool = Executors.newFixedThreadPool(10);
         
-        // Create the ONE central chat room instance
+        // Create the ONE central chat room instance                
         ChatRoom chatRoom = new ChatRoom();
 
         try {
@@ -24,8 +25,8 @@ public class Server {
                 pool.execute(handler); 
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Server error: " + e.getMessage());
         } finally {
             pool.shutdown();
         }
