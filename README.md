@@ -1,145 +1,157 @@
 # Multithreaded Chat Simulator
 
-A real-time multi-user chat platform built using Core Java, advanced multithreading concepts, WebSockets, and the Javalin web framework.
-
-The project demonstrates enterprise-level concurrency patterns, synchronized shared resources, thread pool management, real-time message broadcasting, and browser-based communication using WebSockets.
+A real-time multi-user chat application built using Core Java, Javalin, WebSockets, and concurrent programming principles. The project demonstrates thread-safe communication, client management, real-time message broadcasting, and browser-based chat functionality through a lightweight Java backend.
 
 ---
 
-## 🚀 Features
+## Features
 
-### Core Java Multithreading
+### Real-Time Communication
 
-- Multi-user concurrent chat system
-- Thread-safe shared chat room management
-- Synchronization using `synchronized` methods
-- Race-condition prevention
-- Concurrent client handling
-- Producer-Consumer communication concepts
-- Persistent chat logging
+* Browser-based WebSocket chat
+* Instant message broadcasting
+* Multiple concurrent users
+* Dynamic username updates
+* Join and leave notifications
 
-### Networking
+### Concurrency & Thread Safety
 
-- TCP Socket-based chat architecture
-- ServerSocket and Socket communication
-- Parallel client connections
-- Client identity management
+* Concurrent client management using `ConcurrentHashMap`
+* Thread-safe message broadcasting
+* Safe client registration and removal
+* Multi-user communication without race conditions
 
-### WebSocket Chat Interface
+### Web Server
 
-- Real-time browser-based chat
-- Live message broadcasting
-- Dynamic username changes using:
+* Built with Javalin 6
+* Embedded Jetty server
+* Static file hosting
+* WebSocket endpoint management
+
+### User Commands
+
+Change username:
 
 ```text
 /nick YourName
 ```
 
-- Multiple browser support
-- Instant updates across connected clients
-
-### Javalin Web Server
-
-- Lightweight Java web framework
-- Embedded Jetty server
-- Static file hosting
-- WebSocket endpoint management
-
----
-
-## 🏗️ Architecture
+Example:
 
 ```text
-Browser Client
-      │
-      ▼
-WebSocket (/chat)
-      │
-      ▼
-Javalin Web Server
-      │
-      ▼
-Concurrent Chat Registry
-(ConcurrentHashMap)
-      │
-      ▼
-Broadcast Engine
-      │
-      ▼
-Connected Clients
+/nick Omkar
 ```
 
 ---
 
-## 📂 Project Structure
+## Technology Stack
+
+### Backend
+
+* Java 17
+* Maven
+* Javalin 6
+* Jetty Server
+* WebSockets
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+
+### Concurrency
+
+* ConcurrentHashMap
+* Thread-safe broadcasting
+* Multi-client session management
+
+---
+
+## Architecture
+
+```text
++----------------------+
+| Browser Client       |
++----------+-----------+
+           |
+           | WebSocket
+           v
++----------------------+
+| Javalin Web Server   |
++----------+-----------+
+           |
+           v
++----------------------+
+| ConcurrentHashMap    |
+| Connected Clients    |
++----------+-----------+
+           |
+           v
++----------------------+
+| Broadcast Engine     |
++----------+-----------+
+           |
+           v
++----------------------+
+| Active Chat Users    |
++----------------------+
+```
+
+---
+
+## Project Structure
 
 ```text
 multithreaded-chat-simulator/
 │
 ├── pom.xml
 ├── README.md
+├── railway.json
+├── nixpacks.toml
 │
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── Server.java
-│   │   │   ├── Client.java
-│   │   │   ├── ClientHandler.java
-│   │   │   ├── ChatRoom.java
-│   │   │   ├── Message.java
-│   │   │   └── WebServer.java
-│   │   │
-│   │   └── resources/
-│   │       └── public/
-│   │           └── index.html
-│   │
-│   └── logs/
-│       └── chat.log
-│
-└── target/
+└── src/
+    └── main/
+        ├── java/
+        │   ├── ChatRoom.java
+        │   ├── Client.java
+        │   ├── ClientHandler.java
+        │   ├── Message.java
+        │   ├── Server.java
+        │   └── WebServer.java
+        │
+        └── resources/
+            ├── public/
+            │   └── index.html
+            │
+            └── logs/
+                └── chat.log
 ```
 
 ---
 
-## 🛠 Technologies Used
-
-- Java 21
-- Maven
-- Javalin 6
-- WebSockets
-- Jetty Server
-- ConcurrentHashMap
-- ExecutorService
-- TCP Sockets
-- BufferedWriter
-- HTML
-- CSS
-- JavaScript
-
----
-
-## ⚡ How To Run
+## Getting Started
 
 ### Clone Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/your-username/multithreaded-chat-simulator.git
 cd multithreaded-chat-simulator
 ```
 
-### Compile Project
+### Build Project
 
 ```bash
-mvn clean compile
+mvn clean package
 ```
 
-### Start Server
+### Run Application
 
 ```bash
-mvn exec:java
+java -jar target/multithreaded-chat-simulator-1.0-SNAPSHOT.jar
 ```
 
-Expected Output:
+Expected output:
 
 ```text
 ==================================
@@ -152,7 +164,7 @@ WebSocket: ws://localhost:8080/chat
 
 ---
 
-## 🌐 Open Chat Application
+## Using The Application
 
 Open:
 
@@ -160,39 +172,19 @@ Open:
 http://localhost:8080
 ```
 
-in multiple browser tabs or windows.
+in multiple browser windows.
 
----
-
-## 👤 Set Username
-
-Inside the chat box:
-
-```text
-/nick Omkar
-```
-
-Example:
-
-```text
-SERVER: Anonymous changed name to Omkar
-```
-
----
-
-## 💬 Example Chat
-
-Browser 1:
+### User 1
 
 ```text
 /nick Omkar
 Hello everyone!
 ```
 
-Browser 2:
+### User 2
 
 ```text
-/ nick Rahul
+/nick Rahul
 Hi Omkar!
 ```
 
@@ -207,70 +199,72 @@ Rahul: Hi Omkar!
 
 ---
 
-## 🔥 Concurrency Concepts Demonstrated
+## WebSocket Endpoint
 
-### Thread Pools
-
-```java
-Executors.newFixedThreadPool(10)
+```text
+ws://localhost:8080/chat
 ```
 
-### Synchronization
+Production:
 
-```java
-synchronized
+```text
+wss://your-domain/chat
 ```
+
+---
+
+## Concurrency Concepts Demonstrated
 
 ### Concurrent Collections
 
 ```java
-ConcurrentHashMap
+ConcurrentHashMap<WsContext, String>
 ```
 
-### Inter-Thread Communication
+### Thread Safety
 
-```java
-wait()
-notifyAll()
-```
+* Safe client registration
+* Safe client removal
+* Concurrent message broadcasting
 
-### Producer Consumer Pattern
+### Multi-User Communication
 
-Used for efficient log processing and event coordination.
+* Multiple active browser sessions
+* Shared chat state
+* Real-time updates
 
 ---
 
-## 📈 Future Improvements
+## Future Improvements
 
-- Private Messaging
-- Chat Rooms
-- Message History API
-- User Authentication
-- PostgreSQL Persistence
-- Docker Deployment
-- Railway Cloud Deployment
-- Redis Pub/Sub
-- JWT Security
-- Spring Boot Migration
+* Private Messaging
+* Chat Rooms
+* Authentication & Authorization
+* PostgreSQL Integration
+* Message Persistence
+* Docker Support
+* Redis Pub/Sub
+* JWT Security
+* Spring Boot Migration
 
 ---
 
-## 🎯 Learning Outcomes
+## Learning Outcomes
 
 This project demonstrates:
 
-- Core Java Networking
-- Concurrent Programming
-- Thread Safety
-- Synchronization
-- WebSocket Communication
-- Real-Time Systems Design
-- Maven Project Management
-- Backend Architecture Design
-- Browser-to-Server Messaging
+* Java Backend Development
+* Real-Time Communication
+* WebSocket Programming
+* Concurrent Programming
+* Thread Safety
+* Maven Build Management
+* Javalin Framework
+* Client-Server Architecture
+* Browser-Based Applications
 
 ---
 
-## 📜 License
+## License
 
 MIT License
