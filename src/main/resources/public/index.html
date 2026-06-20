@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Multi-User Chat</title>
+
+```
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+        font-family: "Segoe UI", sans-serif;
+        background: #121212;
+        color: white;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h2 {
+        margin-bottom: 10px;
+    }
+
+    #status {
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #00e676;
+    }
+
+    #chat-box {
+        width: 500px;
+        height: 450px;
+
+        background: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 10px;
+
+        padding: 15px;
+        overflow-y: auto;
+
+        box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    }
+
+    .msg {
+        margin-bottom: 8px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        background: #2b2b2b;
+        word-wrap: break-word;
+    }
+
+    .system {
+        color: #ffd54f;
+        background: #303030;
+    }
+
+    .controls {
+        width: 500px;
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+    }
+
+    input {
+        flex: 1;
+        padding: 12px;
+
+        border: 1px solid #444;
+        border-radius: 6px;
+
+        background: #222;
+        color: white;
+
+        outline: none;
+    }
+
+    button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+
+        background: #7050dd;
+        color: white;
+
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #5a3dc2;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<h2>☁️ Cloud WebSocket Chat Room</h2>
+
+<div id="status">Connecting...</div>
+
+<div id="chat-box"></div>
+
+<div class="controls">
+    <input
+        id="message-input"
+        type="text"
+        placeholder="Type message or /nick YourName"
+        onkeydown="if(event.key==='Enter') sendMessage()"
+    />
+
+```
+<button onclick="sendMessage()">
+    Send
+</button>
+```
+
+</div>
+
+<script>
+
+    const protocol =
+        window.location.protocol === "https:"
+            ? "wss:"
+            : "ws:";
+
+    const wsUrl =
+        `${protocol}//${window.location.host}/chat`;
+
+    const chatBox =
+        document.getElementById("chat-box");
+
+    const status =
+        document.getElementById("status");
+
+    let ws;
+
+    function connect() {
+
+        ws = new WebSocket(wsUrl);
+
+        ws.onopen = () => {
+
+            status.textContent =
+                "🟢 Connected";
+
+            status.style.color =
+                "#00e676";
+        };
+
+        ws.onmessage = (event) => {
+
+            const div =
+                document.createElement("div");
+
+            div.className = "msg";
+
+            if (
+                event.data.startsWith("SERVER:")
+            ) {
+                div.classList.add("system");
+            }
+
+            div.textContent = event.data;
+
+            chatBox.appendChild(div);
+
+            chatBox.scrollTop =
+                chatBox.scrollHeight;
+        };
+
+        ws.onclose = () => {
+
+            status.textContent =
+                "🔴 Disconnected - Reconnecting...";
+
+            status.style.color =
+                "#ff5252";
+
+            setTimeout(connect, 3000);
+        };
+
+        ws.onerror = () => {
+
+            status.textContent =
+                "⚠️ Connection Error";
+        };
+    }
+
+    function sendMessage() {
+
+        const input =
+            document.getElementById(
+                "message-input"
+            );
+
+        const message =
+            input.value.trim();
+
+        if (
+            message === "" ||
+            ws.readyState !== WebSocket.OPEN
+        ) {
+            return;
+        }
+
+        ws.send(message);
+
+        input.value = "";
+    }
+
+    connect();
+
+</script>
+
+</body>
+</html>
