@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static void main(String[] args) {
-        int port = 8080;
+        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
         ExecutorService pool = Executors.newFixedThreadPool(10);
         
         // Create the ONE central chat room instance                
