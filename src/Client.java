@@ -1,16 +1,16 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
         try {
-            // Updated to connect directly across the internet to your cloud server instance
-            String serverDomain = "peaceful-fascination-production.up.railway.app"; 
-            int serverPort = 5355;
+           // Inside your Client.java main method:
+            String serverDomain = "thomas.proxy.rlwy.net"; 
+            int serverPort = 53665;
             
             System.out.println("Connecting to chat server at " + serverDomain + ":" + serverPort + "...");
             try (Socket socket = new Socket(serverDomain, serverPort);
