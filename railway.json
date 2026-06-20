@@ -2,9 +2,9 @@
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
     "builder": "RAILPACK",
-    "buildCommand": "javac src/Server.java src/ChatRoom.java src/ClientHandler.java src/Message.java"
+    "buildCommand": "javac -d target src/Server.java src/ChatRoom.java src/ClientHandler.java src/Message.java"
   },
   "deploy": {
-    "startCommand": "java -cp src Server"
+    "startCommand": "java -cp target Server"
   }
 }
