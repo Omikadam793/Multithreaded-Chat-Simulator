@@ -133,8 +133,6 @@ public class WebServer {
             System.out.println("SERVER FAILED TO START");
             System.out.println(e.getMessage());
             System.out.println();
-
-            e.printStackTrace();
         }
     }
 
