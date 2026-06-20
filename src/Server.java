@@ -6,10 +6,13 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static void main(String[] args) {
-        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
+        // Corrected the environment variable extraction logic for Railway compatibility
+        String portEnv = System.getenv("PORT");
+        int port = (portEnv != null) ? Integer.parseInt(portEnv) : 8080;
+        
         ExecutorService pool = Executors.newFixedThreadPool(10);
         
-        // Create the ONE central chat room instance                
+        // Create the ONE central chat room instance                 
         ChatRoom chatRoom = new ChatRoom();
 
         try {
@@ -18,6 +21,7 @@ public class Server {
 
             while (true) {
                 Socket socket = serverSocket.accept();
+                System.out.println("New client connection accepted from: " + socket.getRemoteSocketAddress());
                 
                 // Pass the socket AND the shared chatRoom to the handler
                 ClientHandler handler = new ClientHandler(socket, chatRoom);
